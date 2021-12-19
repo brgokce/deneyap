@@ -1,0 +1,11 @@
+digraph G {
+node [shape=box];
+"base_link" [label="base_link"];
+"govde_uzvu" [label="govde_uzvu"];
+"kol_uzvu" [label="kol_uzvu"];
+node [shape=ellipse, color=blue, fontcolor=blue];
+"base_link" -> "govde_eklemi" [label="xyz: 0 0 0.1 \nrpy: 0 -0 0"]
+"govde_eklemi" -> "govde_uzvu"
+"govde_uzvu" -> "kol_eklemi" [label="xyz: 0.04 0 0.36 \nrpy: 0 -0 0"]
+"kol_eklemi" -> "kol_uzvu"
+}

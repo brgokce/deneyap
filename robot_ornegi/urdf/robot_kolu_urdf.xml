@@ -12,7 +12,7 @@
     </visual>
     <collision>
       <geometry>
-        <cylinder length="0.03" radius="0.2"/>
+        <cylinder length="0.02" radius="0.2"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -43,7 +43,7 @@
       <geometry>
         <box size="0.08 0.08 0.5"/> 
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0.05"/>
+      <origin rpy="0 0 0" xyz="0 0 0.15"/>
     </collision>
     <inertial>
       <mass value="1"/>
@@ -72,9 +72,9 @@
     </visual>
     <collision>
       <geometry>
-        <cylinder length="0.4" radius="0.24"/>
+        <cylinder length="0.3" radius="0.04"/>
       </geometry>
-      <origin rpy="0 1.5 0" xyz="0 0 0"/>
+      <origin rpy="0 1.57 0" xyz="0.15 0 0"/>
     </collision>
     <inertial>
       <mass value="1"/>

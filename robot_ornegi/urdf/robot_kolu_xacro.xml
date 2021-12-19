@@ -1,16 +1,13 @@
 <?xml version="1.0"?>
 
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" 
- 	xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
-    	xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
-    	xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
-	name="robot_kolu">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro"	name="robot_kolu">
 
 	<xacro:property name="base_link_uzunluk" value="0.01" />
 	<xacro:property name="base_link_cap" value="0.2" />
 
-	<xacro:property name="govde_uzvu_uzunluk" value="0.4" />
-	<xacro:property name="govde_uzvu_cap" value="0.04" />
+	<xacro:property name="govde_x" value="0.08" />
+	<xacro:property name="govde_y" value="0.08" />
+  <xacro:property name="govde_z" value="0.5" />
 
 	<xacro:property name="kol_uzvu_uzunluk" value="0.4" />
 	<xacro:property name="kol_uzvu_cap" value="0.04" />
@@ -57,16 +54,16 @@
   <link name="govde_uzvu">
     <visual>
       <geometry>
-	<cylinder length="${govde_uzvu_uzunluk}" radius="${govde_uzvu_cap}"/>
+	     <box size="${govde_x} ${govde_y} ${govde_z}"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0.09"/>
+      <origin rpy="0 0 0" xyz="0 0 0.15"/>
       <material name="red">
         <color rgba="0 0 1 1"/>
       </material>
     </visual>
     <collision>
       <geometry>
-	<cylinder length="${govde_uzvu_uzunluk}" radius="${govde_uzvu_cap+0.02}"/>
+        <box size="${govde_x} ${govde_y} ${govde_z}"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0.09"/>
     </collision>
@@ -76,9 +73,9 @@
   <joint name="kol_eklemi" type="revolute">
     <parent link="govde_uzvu"/>
     <child link="kol_uzvu"/>
-    <origin xyz="0 0 0.2"/>
+    <origin xyz="0.04 0 0.36"/>
     <axis xyz="0 1 0" />
-    <limit effort="300" velocity="0.1" lower="-4.64" upper="-1.5"/>
+    <limit effort="300" velocity="0.1" lower="1.57" upper="-1.57"/>
     <dynamics damping="50" friction="1"/>
   </joint>
 
@@ -87,16 +84,16 @@
       <geometry>
 	<cylinder length="${kol_uzvu_uzunluk}" radius="${kol_uzvu_cap}"/>
       </geometry>
-      <origin rpy="0 1.5 0" xyz="0 0 0"/>
+      <origin rpy="0 1.57 0" xyz="0.15 0 0"/>
       <material name="green">
         <color rgba="1 0 0 1"/>
       </material>
     </visual>
     <collision>
       <geometry>
-	<cylinder length="${kol_uzvu_uzunluk}" radius="${kol_uzvu_cap+0.2}"/>
+	<cylinder length="${kol_uzvu_uzunluk}" radius="${kol_uzvu_cap}+0.01"/>
       </geometry>
-      <origin rpy="0 1.5 0" xyz="0 0 0"/>
+      <origin rpy="0 1.57 0" xyz="0.15 0 0"/>
     </collision>
 	<xacro:atalet_matrisi kutle="1"/>
   </link>
