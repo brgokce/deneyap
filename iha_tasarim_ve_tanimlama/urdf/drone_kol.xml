@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<robot name="kol" xmlns:xacro="http://ros.org/wiki/xacro">
+		<xacro:property name="ixy_scalee" value="1.782311429" />
+		<xacro:property name="iz_scalee" value="50.140814167" />
+	<xacro:macro name="default_inertial" params="mass p ix_value iy_value iz_value" >
+		<inertial>
+			<origin xyz="0 0 0" rpy="0 0 ${p}" />
+			<mass value="${mass}" />
+			<inertia ixx="${ix_value}" ixy="0" ixz="0"
+					 iyy="${iy_value}" iyz="0" izz="${iz_value}" />
+		</inertial>
+	</xacro:macro> 
+	
+	<xacro:macro name="cylinder_inertia" params="m r h">
+		<inertial>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<mass value="${m}" />	
+			<inertia  ixx="${m*(3*r*r+h*h)/12}" ixy = "0" ixz = "0"
+                  iyy="${m*(3*r*r+h*h)/12}" iyz = "0"
+                  izz="${m*r*r/2}" />
+		</inertial> 
+      </xacro:macro>
+
+	<xacro:macro name="box_inertia" params="m x y z">
+		<inertial>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<mass value="${m}" />
+			<inertia  ixx="${m*(y*y+z*z)/12}" ixy = "0" ixz = "0"
+					iyy="${m*(x*x+z*z)/12}" iyz = "0"
+					izz="${m*(x*x+z*z)/12}" /> 
+		</inertial> 
+	</xacro:macro>
+
+
+    <!--fb : front, back ; lr: left, right -->
+    <xacro:macro name="kol" params="fb_lr translateX translateY flipZ"> 
+		<link name="${fb_lr}_kol">
+			<visual>
+				<origin xyz="0 0 0" rpy="${pi_value/2} 0  ${flipZ*pi_value/4} " /> 
+				<geometry>
+					<cylinder radius="${kol_yaricap}" length="${kol_uzunluk}"/>
+				</geometry>
+				<material name="red" />
+			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="${pi_value/2} 0 ${flipZ*pi_value/4} " />
+				<geometry>
+					<cylinder radius="${kol_yaricap}" length="${kol_uzunluk}"/>
+				</geometry>
+			</collision>
+			<!-- <xacro:cylinder_inertia m="${kol_m}" r="${kol_yaricap}" h="${kol_uzunluk}" /> -->
+			<xacro:default_inertial mass="${mass_pr}" p="${pi_value/4}" ix_value="${(0.04989/2)/ixy_scalee}" iy_value="${(0.04989/2)/ixy_scalee}" iz_value="${(0.24057/2)/iz_scalee}" />
+		</link>
+
+		<joint name="${fb_lr}_kol_eklemi" type="fixed">
+			<parent link="govde"/>
+			<child link="${fb_lr}_kol"/>
+			<origin xyz="${translateX * kol_uzunluk} ${translateY * kol_uzunluk} 0" rpy="0 0 0" /> 
+		</joint>
+
+		<link name="${fb_lr}_motor">
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0" /> 
+				<geometry>
+					<cylinder radius="${motor_yaricap}" length="${motor_uzunluk}"/>
+				</geometry>
+				<material name="blue" />
+			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0" />
+				<geometry>
+					<cylinder radius="${motor_yaricap}" length="${motor_uzunluk}"/>
+				</geometry>
+			</collision>
+			<!-- <xacro:cylinder_inertia m="${motor_m}" r="${motor_yaricap}" h="${motor_uzunluk}" /> -->
+			<xacro:default_inertial mass="${0.01}" p="${0}" ix_value="${(8.95e-6)/ixy_scalee}" iy_value="${(8.95e-6)/ixy_scalee}" iz_value="${(2.4e-5)/iz_scalee}" />
+		</link>
+
+		<joint name="${fb_lr}_kol_motor_eklemi" type="fixed">
+			<parent link="${fb_lr}_kol"/>
+			<child link="${fb_lr}_motor"/>
+			<origin xyz="${translateX * kol_uzunluk/2.4} ${translateY * kol_uzunluk/2.4} ${motor_uzunluk/2}" rpy="0 0 0" /> 
+		</joint>
+
+		<link name="${fb_lr}_motor_mili">
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0  ${flipZ*pi_value/4} " /> 
+				<geometry>
+					<cylinder radius="${mili_yaricap}" length="${mili_uzunluk}"/>
+				</geometry>
+				<material name="black" />
+			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 ${flipZ*pi_value/4} " />
+				<geometry>
+					<cylinder radius="${mili_yaricap}" length="${mili_uzunluk}"/>
+				</geometry>
+			</collision>
+			<!-- <xacro:cylinder_inertia m="${mili_m}" r="${mili_yaricap}" h="${mili_uzunluk}" /> -->
+			<xacro:default_inertial mass="${0.01}" p="${0}" ix_value="${1e-6/ixy_scalee}" iy_value="${1e-6/ixy_scalee}" iz_value="${1e-6/iz_scalee}" />
+		</link>
+
+		<joint name="${fb_lr}_motor_mili_eklemi" type="fixed">
+			<parent link="${fb_lr}_motor"/>
+			<child link="${fb_lr}_motor_mili"/>
+			<origin xyz="0 0 ${mili_uzunluk/2}" rpy="0 0 0" />
+		</joint>
+
+		<link name="${fb_lr}_pervane">
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0" /> 
+				<geometry>
+					<box size="${0.03302/3} ${radiusp} ${0.005}" />
+				</geometry>
+				<material name="golden" />
+			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0" />
+				<geometry>
+					<box size="${0.03302/3} ${radiusp} ${0.005}" />
+				</geometry>
+			</collision>
+			<!-- <xacro:box_inertia m="${pervane_m}" x="${0}" y="${0}" z="${4.42448e-5}" /> -->
+			<xacro:default_inertial mass="${mass_pr}" p="${0}" ix_value="${0}" iy_value="${0}" iz_value="${2.42448e-5/iz_scalee}" />
+		</link>
+
+		<joint name="${fb_lr}_pervane_eklemi" type="continuous">
+			<parent link="${fb_lr}_motor_mili"/>
+			<child link="${fb_lr}_pervane"/>
+			<origin xyz="0 0 0.02" rpy="0 0 0" /> 
+			<axis xyz="0 0 1" rpy="0 0 0" />
+		</joint>
+
+		<transmission name="${fb_lr}_pervane_eklemi">
+			<type>transmission_interface/SimpleTransmission</type>	
+			<joint name="${fb_lr}_pervane_eklemi">
+				<hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="${fb_lr}_pervane_BLDC">
+				<hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+				<mechanicalReduction>1</mechanicalReduction>
+			</actuator>
+		</transmission>
+
+
+		<gazebo reference="${fb_lr}_motor">
+			<material>Gazebo/Blue</material>
+		</gazebo>
+		<gazebo reference="${fb_lr}_motor_mili">
+			<material>Gazebo/White</material>
+		</gazebo>
+		<gazebo reference="${fb_lr}_pervane">
+			<material>Gazebo/Gold</material>
+		</gazebo>
+		<gazebo reference="${fb_lr}_kol">
+			<material>Gazebo/Red</material>
+		</gazebo>
+
+
+
+
+    </xacro:macro>  
+
+
+
+
+
+</robot>

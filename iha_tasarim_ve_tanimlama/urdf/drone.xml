@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="drone">
+
+		<xacro:include filename="$(find iha_tasarim_ve_tanimlama)/urdf/drone_kol.xml" />
+		<xacro:include filename="$(find iha_tasarim_ve_tanimlama)/urdf/drone_material.xml" />
+
+
+
+		<xacro:property name="uzunluk" value="0.01" />
+		<xacro:property name="yaricap" value="0.45" />
+		<xacro:property name="govde_m" value="0.5" />
+		<!-- <xacro:property name="govde_m" value="5" /> -->
+
+		<xacro:property name="kol_yaricap" value="0.008" />
+		<xacro:property name="kol_uzunluk" value="0.15" />
+		<xacro:property name="kol_m" value="0.01" />	
+
+		<xacro:property name="motor_yaricap" value="0.015" />
+		<xacro:property name="motor_uzunluk" value="0.04" />
+		<xacro:property name="motor_m" value="0.005" />
+
+		<xacro:property name="mili_yaricap" value="0.004" />
+		<xacro:property name="mili_uzunluk" value="0.035" />
+		<xacro:property name="mili_m" value="0.001" />
+
+		<xacro:property name="pervane_m" value="0.0055" />
+
+		<xacro:property name="mass_fr" value="0.5" />
+		<xacro:property name="mass_pr" value="0.055" />
+		<xacro:property name="pi_value" value="3.14159263" />
+		<xacro:property name="radiusp" value="0.20" />
+		<xacro:property name="prop_loc" value="0.15909" />
+		<xacro:property name="ixy_scale" value="1.782311429" />
+		<xacro:property name="iz_scale" value="50.140814167" />		
+
+		<link name="govde">
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 ${-pi_value}" />
+				<geometry>
+					<!-- <box size="${uzunluk/2} ${uzunluk/2} ${radius}" /> -->
+					<cylinder radius="${yaricap/4}" length="${uzunluk}"/>
+				</geometry>
+				<material name="white" />
+			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 ${-pi_value}" />
+				<geometry>
+					<!-- <box size="${uzunluk/2} ${uzunluk/2} ${radius}" /> -->
+					<cylinder radius="${yaricap/4}" length="${uzunluk}"/>
+				</geometry>
+			</collision>
+			<!-- <xacro:cylinder_inertia m="${govde_m}" r="${yaricap/4}" h="${uzunluk}" /> -->
+			<xacro:default_inertial mass="${mass_fr}" p="${0*pi_value/4}" ix_value="${(0.04989/2)/ixy_scale}" iy_value="${(0.04989/2)/ixy_scale}" iz_value="${(0.24057/2)/iz_scale}" />
+		</link>
+
+		<link name="imu">
+			<visual>
+				<geometry>
+					<box size="0.02 0.02 0.005"/>
+				</geometry>
+			</visual>
+			<collision>
+				<geometry>
+					<box size="0.02 0.02 0.005"/>
+				</geometry>
+			</collision>
+			<inertial>
+				<mass value="1e-5" />
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+			</inertial>
+		</link>
+
+		<joint name="imu_eklemi" type="fixed">
+			<parent link="govde"/>
+			<child link="imu"/>
+			<origin xyz="0 0 ${uzunluk/2}" rpy="0 0 0" />
+		</joint>
+
+		<kol fb_lr="on" translateX="1" translateY="0" flipZ="2"/>
+		<kol fb_lr="sag" translateX="0" translateY="-1" flipZ="4"/>
+		<kol fb_lr="arka" translateX="-1" translateY="0" flipZ="2"/>
+		<kol fb_lr="sol" translateX="0" translateY="1" flipZ="4"/>
+
+		<xacro:include filename="$(find iha_tasarim_ve_tanimlama)/urdf/drone.gazebo" />
+
+
+</robot>

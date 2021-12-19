@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<robot>
+
+
+
+
+	<gazebo>
+		<!-- Provide a Positive Velocity -->
+		<plugin name="on_pervane" filename="libLiftDragPlugin.so">
+			<a0>0.1</a0>
+			<cla>0.1</cla>
+			<cda>0.01</cda>
+			<cma>0.0</cma>
+			<alpha_stall>0.2</alpha_stall>
+			<cla_stall>-0.2</cla_stall>
+			<cda_stall>1.0</cda_stall>
+			<cma_stall>0.0</cma_stall>
+			<cp>0 0.5 0</cp>
+			<area>0.762</area>
+			<air_density>1.2041</air_density>
+			<forward>1 0 0</forward>
+			<upward>0 0 -1</upward>
+			<link_name>on_pervane</link_name>
+			<control_joint>on_pervane_eklemi</control_joint>
+		</plugin>
+	</gazebo>
+
+	<gazebo>
+		<!-- Provide a Positive Velocity -->
+		<plugin name="sol_pervane" filename="libLiftDragPlugin.so">
+			<a0>0.1</a0>
+			<cla>0.1</cla>
+			<cda>0.01</cda>
+			<cma>0.0</cma>
+			<alpha_stall>0.2</alpha_stall>
+			<cla_stall>-0.2</cla_stall>
+			<cda_stall>1.0</cda_stall>
+			<cma_stall>0.0</cma_stall>
+			<cp>0 0.5 0</cp>
+			<area>0.762</area>
+			<air_density>1.2041</air_density>
+			<forward>1 0 0</forward>
+			<upward>0 0 1</upward>
+			<link_name>sol_pervane</link_name>
+			<control_joint>sol_pervane_eklemi</control_joint>
+		</plugin>
+	</gazebo>
+
+    <gazebo>
+		<!-- Provide a Positive Velocity -->
+		<plugin name="sag_pervane" filename="libLiftDragPlugin.so">
+			<a0>0.1</a0>
+			<cla>0.1</cla>
+			<cda>0.01</cda>
+			<cma>0.0</cma>
+			<alpha_stall>0.2</alpha_stall>
+			<cla_stall>-0.2</cla_stall>
+			<cda_stall>1.0</cda_stall>
+			<cma_stall>0.0</cma_stall>
+			<cp>0 0.5 0</cp>
+			<area>0.762</area>
+			<air_density>1.2041</air_density>
+			<forward>1 0 0</forward>
+			<upward>0 0 1</upward>
+			<link_name>sag_pervane</link_name>
+			<control_joint>sag_pervane_eklemi</control_joint>
+		</plugin>
+	</gazebo>
+
+    <gazebo>
+		<!-- Provide a Positive Velocity -->
+		<plugin name="arka_pervane" filename="libLiftDragPlugin.so">
+			<a0>0.1</a0>
+			<cla>0.1</cla>
+			<cda>0.01</cda>
+			<cma>0.0</cma>
+			<alpha_stall>0.2</alpha_stall>
+			<cla_stall>-0.2</cla_stall>
+			<cda_stall>1.0</cda_stall>
+			<cma_stall>0.0</cma_stall>
+			<cp>0 0.5 0</cp>
+			<area>0.762</area>
+			<air_density>1.2041</air_density>
+			<forward>1 0 0</forward>
+			<upward>0 0 -1</upward>
+			<link_name>arka_pervane</link_name>
+			<control_joint>arka_pervane_eklemi</control_joint>
+		</plugin>
+	</gazebo>
+
+	<gazebo reference="imu">
+		<gravity>true</gravity>
+		<sensor name="imu_sensor" type="imu">
+		<always_on>true</always_on>
+		<update_rate>100</update_rate>
+		<visualize>true</visualize>
+		<topic>__default_topic__</topic>
+		<plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+			<topicName>imu</topicName>
+			<bodyName>imu</bodyName>
+			<updateRateHZ>10.0</updateRateHZ>
+			<gaussianNoise>0.0</gaussianNoise>
+			<xyzOffset>0 0 0</xyzOffset>
+			<rpyOffset>0 0 0</rpyOffset>
+			<frameName>imu</frameName>
+		</plugin>
+		<pose>0 0 0 0 0 0</pose>
+		</sensor>
+	</gazebo>
+	<gazebo reference="imu">
+		<material>Gazebo/Red</material>
+	</gazebo>
+
+	<gazebo>
+		<plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+			<robotNameSpace>/drone</robotNameSpace>
+			<robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+			<legacyModeNS>true</legacyModeNS>
+		</plugin>
+	</gazebo>
+	
+</robot>

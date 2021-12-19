@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<robot name="ucak" xmlns:xacro="http://ros.org/wiki/xacro">
+    
+    
+    
+    <link name="ucak_govdesi">  
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <mass value="1.46" />
+            <inertia ixx="${0.83*0.1*0.1}" ixy="0.0" ixz="0.00" iyy="${0.83*1*0.1}" iyz="0.0" izz="${0.83*1*0.1}" />
+        </inertial>
+	<visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="1 0.1 0.1"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.78 0.76 0.74 1" />
+            </material>
+        </visual>
+	<collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="1 0.1 0.1"/>
+            </geometry>
+        </collision>
+    </link>
+
+
+
+
+
+    <xacro:macro name="kanat" params="lr translateY flipZ">
+        <link name="${lr}_kanat">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <box size="0.75 0.2 0.03"/>
+                </geometry>
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <box size="0.75 0.2 0.03"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <mass value="0.10" />
+                <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+            </inertial>
+        </link>
+        <joint name="${lr}_kanat_eklemi" type="fixed">
+            <origin xyz="0.0 ${translateY} 0.0" rpy="0.0 0.0 ${flipZ}"/>
+            <parent link="ucak_govdesi"/>
+            <child link="${lr}_kanat"/>
+        </joint>
+    </xacro:macro>
+
+    <xacro:macro name="eleron" params="lr translateY">
+        <link name="${lr}_eleron">
+            <visual>
+                <origin xyz="0 ${translateY} 0" rpy="0 0 0" />
+                <geometry>
+                    <box size="0.75 0.1 0.03" />
+                </geometry>
+                <material name="">
+                <color rgba="0.28 0.76 0.74 1" />
+            </material>
+            </visual>
+            <collision>
+                <origin xyz="0 ${translateY} 0" rpy="0 0 0" />
+                <geometry>
+                    <box size="0.75 0.1 0.03" />
+                </geometry>
+            </collision>
+            <inertial>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <mass value="0.10" />
+                <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+            </inertial>
+        </link>
+        <xacro:if value="${lr == 'sag'}">
+            <joint name="${lr}_eleron_eklemi" type="revolute">
+                <parent link="${lr}_kanat"/>
+                <child link="${lr}_eleron"/>
+                <axis xyz="1 0 0" /> 
+                <limit lower="-3.14" upper="3.14" effort="17000" velocity="45" />
+                <origin xyz="0 0.10 0" rpy="0 0 0" />
+            </joint>
+        </xacro:if>
+
+        <xacro:if value="${lr == 'sol'}">
+            <joint name="${lr}_eleron_eklemi" type="revolute">
+                <parent link="${lr}_kanat"/>
+                <child link="${lr}_eleron"/>
+                <axis xyz="1 0 0" /> 
+                <limit lower="-3.14" upper="3.14" effort="17000" velocity="45" />
+                <origin xyz="0 0.10 0" rpy="0 0 0" />
+                <mimic joint="sag_eleron_eklemi" multiplier="-1" offset="0"/>
+            </joint>
+        </xacro:if>
+
+    </xacro:macro>
+
+
+
+
+
+    <kanat lr="sag" translateY="-0.42" flipZ="1.5707963267949"/>
+    <kanat lr="sol" translateY="0.42" flipZ="1.5707963267949"/>
+    <eleron lr="sag" translateY="0.05"/>
+    <eleron lr="sol" translateY="0.05"/>
+
+    <!-- <eleron lr="sag" translateY="-0.05"/> -->
+    
+    <!-- <link name="kanat">
+	<inertial>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <mass value="0.107409280317998" />
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+        </inertial>
+	<visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="1.5 0.2 0.03"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.780392156862745 0.76078431372549 0.741176470588235 1" />
+            </material>
+        </visual>
+	<collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="1.5 0.2 0.03"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="kanat_eklemi" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 1.5707963267949" />
+        <parent link="ucak_govdesi" />
+        <child link="kanat" />
+    </joint>
+
+    <link name="eleron_sag">
+	<inertial>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <mass value="0.107409280317998" />
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+        </inertial>
+	<visual>
+            <origin xyz="0 0.05 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.5 0.1 0.03"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.780392156862745 0.76078431372549 0.741176470588235 1" />
+            </material>
+        </visual>
+	<collision>
+            <origin xyz="0 0.05 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.5 0.1 0.03"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="eleron_sag_eklemi" type="revolute">
+        <origin xyz="-0.5 0.10 0" rpy="0 0 0" />
+        <parent link="kanat" />
+        <child link="eleron_sag" />
+        <axis xyz="1 0 0" /> 
+        <limit lower="-3.14" upper="3.14" effort="17000" velocity="45" />
+    </joint>
+
+    <link name="eleron_sol">
+	<inertial>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <mass value="0.107409280317998" />
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+        </inertial>
+	<visual>
+            <origin xyz="0 0.05 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.5 0.1 0.03"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.780392156862745 0.76078431372549 0.741176470588235 1" />
+            </material>
+        </visual>
+	<collision>
+            <origin xyz="0 0.05 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.5 0.1 0.03"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="eleron_sol_eklemi" type="revolute">
+        <origin xyz="0.5 0.10 0" rpy="0 0 0" />
+        <parent link="kanat" />
+        <child link="eleron_sol" />
+        <axis xyz="1 0 0" /> 
+        <limit lower="-3.14" upper="3.14" effort="17000" velocity="45" />
+        <mimic joint="eleron_sag_eklemi" multiplier="-1" offset="0"/>
+    </joint> -->
+
+
+
+
+    <link name="yatay_dengeleyici">
+	<inertial>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <mass value="0.10" />
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+        </inertial>
+	<visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.8 0.1 0.03"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.78 0.25 0.74 1" />
+            </material>
+        </visual>
+	<collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.8 0.1 0.03"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="yatay_dengeleyici_eklemi" type="fixed">
+        <origin xyz="-0.45 0 0" rpy="0 0 1.5707963267949" />
+        <parent link="ucak_govdesi" />
+        <child link="yatay_dengeleyici" />
+    </joint>
+
+
+    <link name="elevator">
+	<inertial>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <mass value="0.10" />
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+        </inertial>
+	<visual>
+            <origin xyz="0 0.05 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.8 0.1 0.03"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.4 0.0 0.1 1" />
+            </material>
+        </visual>
+	<collision>
+            <origin xyz="0 0.05 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.8 0.1 0.03"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="elevator_eklemi" type="revolute">
+        <origin xyz="0 0.05 0" rpy="0 0 0" />
+        <parent link="yatay_dengeleyici" />
+        <child link="elevator" />
+        <axis xyz="1 0 0" /> 
+        <limit lower="-3.14" upper="3.14" effort="17000" velocity="45" /> 
+    </joint>
+
+
+
+    <link name="dikey_dengeleyici">
+	<inertial>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <mass value="0.10" />
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+        </inertial>
+	<visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.1 0.2 0.03"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.6 0.8 0.4 1" />
+            </material>
+        </visual>
+	<collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.1 0.2 0.03"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="dikey_dengeleyici_eklemi" type="fixed">
+        <origin xyz="-0.45 0 0.15" rpy="1.5707963267949 0 0" />
+        <parent link="ucak_govdesi" />
+        <child link="dikey_dengeleyici" />
+    </joint> 
+
+
+    <link name="dumen">
+	<inertial>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <mass value="0.10" />
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+        </inertial>
+	<visual>
+            <origin xyz="-0.05 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.1 0.2 0.03"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.2 0.2 0.0 1" />
+            </material>
+        </visual>
+	<collision>
+            <origin xyz="-0.05 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.1 0.2 0.03"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="dumen_eklemi" type="revolute">
+        <origin xyz="-0.05 0 0" rpy="0 0 0" />
+        <parent link="dikey_dengeleyici" />
+        <child link="dumen" />
+        <axis xyz="0 1 0" /> 
+        <limit lower="-3.14" upper="3.14" effort="17000" velocity="45" />       
+    </joint>
+
+</robot>

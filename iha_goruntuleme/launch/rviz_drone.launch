@@ -1,0 +1,18 @@
+<launch>
+
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find iha_tasarim_ve_tanimlama)/urdf/drone.xml" />
+  <arg name="model" />
+  <arg name="gui" default="TRUE" />
+  <param name="use_gui" value="$(arg gui)" />
+
+  <!-- joint_state_publisher rate -->
+  <param name="rate" value="40"/>
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="use_gui" value="TRUE" />
+  </node>
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find iha_goruntuleme)/rviz/drone.rviz" />
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+</launch>

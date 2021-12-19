@@ -1,0 +1,29 @@
+digraph G {
+node [shape=box];
+"ucak_govdesi" [label="ucak_govdesi"];
+"dikey_dengeleyici" [label="dikey_dengeleyici"];
+"dumen" [label="dumen"];
+"sag_kanat" [label="sag_kanat"];
+"sag_eleron" [label="sag_eleron"];
+"sol_kanat" [label="sol_kanat"];
+"sol_eleron" [label="sol_eleron"];
+"yatay_dengeleyici" [label="yatay_dengeleyici"];
+"elevator" [label="elevator"];
+node [shape=ellipse, color=blue, fontcolor=blue];
+"ucak_govdesi" -> "dikey_dengeleyici_eklemi" [label="xyz: -0.45 0 0.15 \nrpy: 1.5708 -0 0"]
+"dikey_dengeleyici_eklemi" -> "dikey_dengeleyici"
+"dikey_dengeleyici" -> "dumen_eklemi" [label="xyz: -0.05 0 0 \nrpy: 0 -0 0"]
+"dumen_eklemi" -> "dumen"
+"ucak_govdesi" -> "sag_kanat_eklemi" [label="xyz: 0 -0.42 0 \nrpy: 0 -0 1.5708"]
+"sag_kanat_eklemi" -> "sag_kanat"
+"sag_kanat" -> "sag_eleron_eklemi" [label="xyz: 0 0.1 0 \nrpy: 0 -0 0"]
+"sag_eleron_eklemi" -> "sag_eleron"
+"ucak_govdesi" -> "sol_kanat_eklemi" [label="xyz: 0 0.42 0 \nrpy: 0 -0 1.5708"]
+"sol_kanat_eklemi" -> "sol_kanat"
+"sol_kanat" -> "sol_eleron_eklemi" [label="xyz: 0 0.1 0 \nrpy: 0 -0 0"]
+"sol_eleron_eklemi" -> "sol_eleron"
+"ucak_govdesi" -> "yatay_dengeleyici_eklemi" [label="xyz: -0.45 0 0 \nrpy: 0 -0 1.5708"]
+"yatay_dengeleyici_eklemi" -> "yatay_dengeleyici"
+"yatay_dengeleyici" -> "elevator_eklemi" [label="xyz: 0 0.05 0 \nrpy: 0 -0 0"]
+"elevator_eklemi" -> "elevator"
+}

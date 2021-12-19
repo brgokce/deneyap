@@ -1,0 +1,56 @@
+digraph G {
+node [shape=box];
+"govde" [label="govde"];
+"arka_kol" [label="arka_kol"];
+"arka_motor" [label="arka_motor"];
+"arka_motor_mili" [label="arka_motor_mili"];
+"arka_pervane" [label="arka_pervane"];
+"imu" [label="imu"];
+"on_kol" [label="on_kol"];
+"on_motor" [label="on_motor"];
+"on_motor_mili" [label="on_motor_mili"];
+"on_pervane" [label="on_pervane"];
+"sag_kol" [label="sag_kol"];
+"sag_motor" [label="sag_motor"];
+"sag_motor_mili" [label="sag_motor_mili"];
+"sag_pervane" [label="sag_pervane"];
+"sol_kol" [label="sol_kol"];
+"sol_motor" [label="sol_motor"];
+"sol_motor_mili" [label="sol_motor_mili"];
+"sol_pervane" [label="sol_pervane"];
+node [shape=ellipse, color=blue, fontcolor=blue];
+"govde" -> "arka_kol_eklemi" [label="xyz: -0.15 0 0 \nrpy: 0 -0 0"]
+"arka_kol_eklemi" -> "arka_kol"
+"arka_kol" -> "arka_kol_motor_eklemi" [label="xyz: -0.0625 0 0.02 \nrpy: 0 -0 0"]
+"arka_kol_motor_eklemi" -> "arka_motor"
+"arka_motor" -> "arka_motor_mili_eklemi" [label="xyz: 0 0 0.0175 \nrpy: 0 -0 0"]
+"arka_motor_mili_eklemi" -> "arka_motor_mili"
+"arka_motor_mili" -> "arka_pervane_eklemi" [label="xyz: 0 0 0.02 \nrpy: 0 -0 0"]
+"arka_pervane_eklemi" -> "arka_pervane"
+"govde" -> "imu_eklemi" [label="xyz: 0 0 0.005 \nrpy: 0 -0 0"]
+"imu_eklemi" -> "imu"
+"govde" -> "on_kol_eklemi" [label="xyz: 0.15 0 0 \nrpy: 0 -0 0"]
+"on_kol_eklemi" -> "on_kol"
+"on_kol" -> "on_kol_motor_eklemi" [label="xyz: 0.0625 0 0.02 \nrpy: 0 -0 0"]
+"on_kol_motor_eklemi" -> "on_motor"
+"on_motor" -> "on_motor_mili_eklemi" [label="xyz: 0 0 0.0175 \nrpy: 0 -0 0"]
+"on_motor_mili_eklemi" -> "on_motor_mili"
+"on_motor_mili" -> "on_pervane_eklemi" [label="xyz: 0 0 0.02 \nrpy: 0 -0 0"]
+"on_pervane_eklemi" -> "on_pervane"
+"govde" -> "sag_kol_eklemi" [label="xyz: 0 -0.15 0 \nrpy: 0 -0 0"]
+"sag_kol_eklemi" -> "sag_kol"
+"sag_kol" -> "sag_kol_motor_eklemi" [label="xyz: 0 -0.0625 0.02 \nrpy: 0 -0 0"]
+"sag_kol_motor_eklemi" -> "sag_motor"
+"sag_motor" -> "sag_motor_mili_eklemi" [label="xyz: 0 0 0.0175 \nrpy: 0 -0 0"]
+"sag_motor_mili_eklemi" -> "sag_motor_mili"
+"sag_motor_mili" -> "sag_pervane_eklemi" [label="xyz: 0 0 0.02 \nrpy: 0 -0 0"]
+"sag_pervane_eklemi" -> "sag_pervane"
+"govde" -> "sol_kol_eklemi" [label="xyz: 0 0.15 0 \nrpy: 0 -0 0"]
+"sol_kol_eklemi" -> "sol_kol"
+"sol_kol" -> "sol_kol_motor_eklemi" [label="xyz: 0 0.0625 0.02 \nrpy: 0 -0 0"]
+"sol_kol_motor_eklemi" -> "sol_motor"
+"sol_motor" -> "sol_motor_mili_eklemi" [label="xyz: 0 0 0.0175 \nrpy: 0 -0 0"]
+"sol_motor_mili_eklemi" -> "sol_motor_mili"
+"sol_motor_mili" -> "sol_pervane_eklemi" [label="xyz: 0 0 0.02 \nrpy: 0 -0 0"]
+"sol_pervane_eklemi" -> "sol_pervane"
+}

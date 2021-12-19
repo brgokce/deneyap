@@ -1,0 +1,17 @@
+joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
+
+joint_motor_controller:
+    type: velocity_controllers/JointGroupVelocityController
+    joints: 
+        - on_pervane_eklemi
+        - sol_pervane_eklemi
+        - arka_pervane_eklemi
+        - sag_pervane_eklemi
+    gains:
+        on_pervane_eklemi: {p: 10000, i: 1, d: 1000}
+        sol_pervane_eklemi: {p: 10000, i: 1, d: 1000}
+        arka_pervane_eklemi: {p: 10000, i: 1, d: 1000}
+        sag_pervane_eklemi: {p: 10000, i: 1, d: 1000}
+    

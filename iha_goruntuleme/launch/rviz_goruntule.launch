@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name ="model"/>
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find iha_tasarim_ve_tanimlama)/urdf/pan_tilt.urdf" />
+   <!-- <param name="robot_description" textfile="$(find robot_ornegi)/urdf/robot_kolu_urdf.xml"/>-->
+    <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
+
+	<!-- Starting robot state publish which will publish tf -->
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+	<!-- Launch visualization in rviz -->
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find iha_goruntuleme)/rviz/pan_rviz.rviz" required="true" />
+    <node pkg="tf" type="static_transform_publisher" name="to_temp_link" args="0 0 0 0 0 0 map world 5" />
+</launch>

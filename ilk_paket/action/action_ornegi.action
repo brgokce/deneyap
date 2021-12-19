@@ -1,0 +1,11 @@
+#goal definition
+int32 sinir
+char islem
+float64 a
+float64 b
+---
+#result definition
+float32 sonuc
+---
+#feedback
+int32 hedef_feedback
