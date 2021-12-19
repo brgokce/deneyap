@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" 
+ 	xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+    	xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+    	xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+	name="robot_kolu">
+
+	<xacro:property name="base_link_uzunluk" value="0.01" />
+	<xacro:property name="base_link_cap" value="0.2" />
+
+	<xacro:property name="govde_uzvu_uzunluk" value="0.4" />
+	<xacro:property name="govde_uzvu_cap" value="0.04" />
+
+	<xacro:property name="kol_uzvu_uzunluk" value="0.4" />
+	<xacro:property name="kol_uzvu_cap" value="0.04" />
+
+	<xacro:macro name="atalet_matrisi" params="kutle">
+               <inertial>
+                       <mass value="${kutle}" />
+                       <inertia ixx="0.5" ixy="0.0" ixz="0.0"
+                                iyy="0.5" iyz="0.0"
+                                izz="0.5" />
+               </inertial>
+	</xacro:macro>
+
+  <link name="base_link">
+
+    <visual>
+      <geometry>
+	<cylinder length="${base_link_uzunluk}" radius="${base_link_cap}"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="yellow">
+        <color rgba="1 1 0 1"/>
+      </material>
+    </visual>
+
+    <collision>
+      <geometry>
+	<cylinder length="${base_link_uzunluk+0.02}" radius="0.2"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+	<xacro:atalet_matrisi kutle="1"/>
+  </link>
+
+  <joint name="govde_eklemi" type="revolute">
+    <parent link="base_link"/>
+    <child link="govde_uzvu"/>
+    <origin xyz="0 0 0.1"/>
+    <axis xyz="0 0 1" />
+    <limit effort="300" velocity="0.1" lower="-3.14" upper="3.14"/>
+    <dynamics damping="50" friction="1"/>
+  </joint>
+
+  <link name="govde_uzvu">
+    <visual>
+      <geometry>
+	<cylinder length="${govde_uzvu_uzunluk}" radius="${govde_uzvu_cap}"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.09"/>
+      <material name="red">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+	<cylinder length="${govde_uzvu_uzunluk}" radius="${govde_uzvu_cap+0.02}"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.09"/>
+    </collision>
+	<xacro:atalet_matrisi kutle="1"/>
+  </link>
+
+  <joint name="kol_eklemi" type="revolute">
+    <parent link="govde_uzvu"/>
+    <child link="kol_uzvu"/>
+    <origin xyz="0 0 0.2"/>
+    <axis xyz="0 1 0" />
+    <limit effort="300" velocity="0.1" lower="-4.64" upper="-1.5"/>
+    <dynamics damping="50" friction="1"/>
+  </joint>
+
+  <link name="kol_uzvu">
+    <visual>
+      <geometry>
+	<cylinder length="${kol_uzvu_uzunluk}" radius="${kol_uzvu_cap}"/>
+      </geometry>
+      <origin rpy="0 1.5 0" xyz="0 0 0"/>
+      <material name="green">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+	<cylinder length="${kol_uzvu_uzunluk}" radius="${kol_uzvu_cap+0.2}"/>
+      </geometry>
+      <origin rpy="0 1.5 0" xyz="0 0 0"/>
+    </collision>
+	<xacro:atalet_matrisi kutle="1"/>
+  </link>
+</robot>

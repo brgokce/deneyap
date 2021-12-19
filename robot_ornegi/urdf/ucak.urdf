@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="ucak">
+    <link name="govde">  
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <mass value="1.46872860183279" />
+            <inertia ixx="0.337078234151496" ixy="0.000400956172161471" ixz="0.000153729345332478" iyy="0.323323767647255" iyz="-0.00436480886180004" izz="0.0204387896128557" />
+        </inertial>
+	<visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="1 0.1 0.1"/>
+            </geometry>
+            <material name="">
+                <color rgba="1 0.7 0.7 1" />
+            </material>
+        </visual>
+	<collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="1 0.1 0.1"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="kanat">
+        <inertial>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <mass value="0.1" />
+                <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+            </inertial>
+        <visual>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <box size="1.5 0.2 0.03"/>
+                </geometry>
+                <material name="">
+                    <color rgba="0.6 0.6 0.6 1" />
+                </material>
+        </visual>
+        <collision>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <box size="1.5 0.2 0.03"/>
+                </geometry>
+        </collision>
+        </link>
+
+        <joint name="kanat_bag" type="fixed">
+            <origin xyz="0 0 0" rpy="0 0 1.5707963267949" />
+            <parent link="govde" />
+            <child link="kanat" />
+        </joint>
+
+        <link name="aileron_sag">
+            <inertial>
+                    <origin xyz="0 0 0" rpy="0 0 0" />
+                    <mass value="0.107409280317998" />
+                    <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+                </inertial>
+            <visual>
+                    <origin xyz="0 0.05 0" rpy="0 0 0" />
+                    <geometry>
+                        <box size="0.5 0.1 0.03"/>
+                    </geometry>
+                    <material name="">
+                        <color rgba="0.780392156862745 0.76078431372549 0.741176470588235 1" />
+                    </material>
+                </visual>
+            <collision>
+                    <origin xyz="0 0.05 0" rpy="0 0 0" />
+                    <geometry>
+                        <box size="0.5 0.1 0.03"/>
+                    </geometry>
+                </collision>
+            </link>
+
+            <joint name="aileron_sag_bag" type="revolute">
+                <origin xyz="-0.5 0.10 0" rpy="0 0 0" />
+                <parent link="kanat" />
+                <child link="aileron_sag" />
+                <axis xyz="1 0 0" /> 
+                <limit lower="-1.57" upper="1.57" effort="17000" velocity="45" />
+            </joint>
+            <link name="aileron_sol">
+                <inertial>
+                        <origin xyz="0 0 0" rpy="0 0 0" />
+                        <mass value="0.107409280317998" />
+                        <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+                    </inertial>
+                <visual>
+                        <origin xyz="0 0.05 0" rpy="0 0 0" />
+                        <geometry>
+                            <box size="0.5 0.1 0.03"/>
+                        </geometry>
+                        <material name="">
+                            <color rgba="0.780392156862745 0.76078431372549 0.741176470588235 1" />
+                        </material>
+                    </visual>
+                <collision>
+                        <origin xyz="0 0.05 0" rpy="0 0 0" />
+                        <geometry>
+                            <box size="0.5 0.1 0.03"/>
+                        </geometry>
+                    </collision>
+                </link>
+            
+                <joint name="aileron_sol_bag" type="revolute">
+                    <origin xyz="0.5 0.10 0" rpy="0 0 0" />
+                    <parent link="kanat" />
+                    <child link="aileron_sol" />
+                    <axis xyz="1 0 0" /> 
+                    <limit lower="-1.57" upper="1.57" effort="17000" velocity="45" />
+                    <mimic joint="aileron_sag_bag" multiplier="-1" offset="0"/>
+                </joint>
+     
+                <link name="arka_kanat">
+                    <inertial>
+                            <origin xyz="0 0 0" rpy="0 0 0" />
+                            <mass value="0.107409280317998" />
+                            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+                        </inertial>
+                    <visual>
+                            <origin xyz="0 0 0" rpy="0 0 0" />
+                            <geometry>
+                                <box size="0.8 0.15 0.03"/>
+                            </geometry>
+                            <material name="">
+                                <color rgba="0.780392156862745 0.76078431372549 0.741176470588235 1" />
+                            </material>
+                        </visual>
+                    <collision>
+                            <origin xyz="0 0 0" rpy="0 0 0" />
+                            <geometry>
+                                <box size="0.8 0.15 0.03"/>
+                            </geometry>
+                        </collision>
+                    </link>
+                
+                    <joint name="arka_kanat_bag" type="fixed">
+                        <origin xyz="-0.5 0 0" rpy="0 0 1.5707963267949" />
+                        <parent link="govde" />
+                        <child link="arka_kanat" />
+                    </joint>
+                
+                
+                   <link name="elevator">
+                    <inertial>
+                            <origin xyz="0 0 0" rpy="0 0 0" />
+                            <mass value="0.107409280317998" />
+                            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+                        </inertial>
+                    <visual>
+                            <origin xyz="0 0.05 0" rpy="0 0 0" />
+                            <geometry>
+                                <box size="0.8 0.1 0.03"/>
+                            </geometry>
+                            <material name="">
+                                <color rgba="0.780392156862745 0.76078431372549 0.741176470588235 1" />
+                            </material>
+                        </visual>
+                    <collision>
+                            <origin xyz="0 0.05 0" rpy="0 0 0" />
+                            <geometry>
+                                <box size="0.8 0.1 0.03"/>
+                            </geometry>
+                        </collision>
+                    </link>
+                
+                    <joint name="elevator_bag" type="revolute">
+                        <origin xyz="0 0.075 0" rpy="0 0 0" />
+                        <parent link="arka_kanat" />
+                        <child link="elevator" />
+                        <axis xyz="1 0 0" /> 
+                        <limit lower="-3.14" upper="3.14" effort="17000" velocity="45" /> 
+                    </joint>
+                
+                
+                
+                    <link name="kuyruk">
+                    <inertial>
+                            <origin xyz="0 0 0" rpy="0 0 0" />
+                            <mass value="0.107409280317998" />
+                            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+                        </inertial>
+                    <visual>
+                            <origin xyz="0 0 0" rpy="0 0 0" />
+                            <geometry>
+                                <box size="0.1 0.2 0.03"/>
+                            </geometry>
+                            <material name="">
+                                <color rgba="0.780392156862745 0.76078431372549 0.741176470588235 1" />
+                            </material>
+                        </visual>
+                    <collision>
+                            <origin xyz="0 0 0" rpy="0 0 0" />
+                            <geometry>
+                                <box size="0.1 0.2 0.03"/>
+                            </geometry>
+                        </collision>
+                    </link>
+                
+                    <joint name="kuyruk_bag" type="fixed">
+                        <origin xyz="-0.45 0 0.15" rpy="1.5707963267949 0 0" />
+                        <parent link="govde" />
+                        <child link="kuyruk" />
+                    </joint>
+                
+                
+                    <link name="rudder">
+                    <inertial>
+                            <origin xyz="0 0 0" rpy="0 0 0" />
+                            <mass value="0.107409280317998" />
+                            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+                        </inertial>
+                    <visual>
+                            <origin xyz="-0.05 0 0" rpy="0 0 0" />
+                            <geometry>
+                                <box size="0.1 0.2 0.03"/>
+                            </geometry>
+                            <material name="">
+                                <color rgba="0.780392156862745 0.76078431372549 0.741176470588235 1" />
+                            </material>
+                        </visual>
+                    <collision>
+                            <origin xyz="-0.05 0 0" rpy="0 0 0" />
+                            <geometry>
+                                <box size="0.1 0.2 0.03"/>
+                            </geometry>
+                        </collision>
+                    </link>
+                
+                    <joint name="rudder_bag" type="revolute">
+                        <origin xyz="-0.05 0 0" rpy="0 0 0" />
+                        <parent link="kuyruk" />
+                        <child link="rudder" />
+                        <axis xyz="0 1 0" /> 
+                        <limit lower="-3.14" upper="3.14" effort="17000" velocity="45" />       
+                    </joint>
+                       
+
+    </robot>
