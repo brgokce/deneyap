@@ -21,10 +21,18 @@ float m = 0.48; //dronun kutlesi
 float sayi=0;
 float flag_pose=0; 
 float flag_rotate=0;
+// double ixx=0.1247618;
+// double iyy=0.1247618;
+// double izz=0.60168977;
 double ixx=0.007;
 double iyy=0.007;
 double izz=0.012;
-
+// ixx=0.1247618;
+// iyy=0.1247618;
+// izz=0.60168977;
+    // ixx=0.007;
+    // iyy=0.007;
+    // izz=0.012;
 struct Quaternion
 {
     double w, x, y, z;
@@ -110,6 +118,9 @@ PID_rotation_in pid_rotation_in;
 PID_position_back pid_position_back;
 PID_position_in pid_position_in;
 
+/* pid_position_in.preverr_x=0;
+pid_position_in.preverr_y=0;
+pid_position_in.preverr_z=0; */
 void pose_callback(const geometry_msgs::Pose::ConstPtr& pose_value)
 {
     iha_pose.position = pose_value->position;
@@ -256,8 +267,8 @@ double prevErr_roll, prevErr_pitch, prevErr_yaw, prevTime_rotate;
 PID_rotation_back PID_rotation(PID_rotation_in pid_in)
 {
     PID_rotation_back pid_back;
-    double kproll, kiroll, kdro
-
+    double kproll, kiroll, kdroll, kppitch, kipitch, kdpitch, kpyaw, kiyaw, kdyaw;
+    kproll = 60;
     kiroll = 0.01;
     kdroll = 0,001;
     // kproll = 10;
@@ -371,12 +382,22 @@ PID_rotation_back PID_rotation(PID_rotation_in pid_in)
     u_yaw = u_yaw * izz;
 
     double w12, w22, w32, w42;
-
+    /* w12=(pid_in.u_1/(4*kf))-(u_3/(2*kf*l))-(u_4/(4*b));  
+    w22=(pid_in.u_1/(4*kf))-(u_2/(2*kf*l))  +(u_4/(4*b));
+    w32=(pid_in.u_1/(4*kf))+(u_3/(2*kf*l))-(u_4/(4*b));
+    w42=(pid_in.u_1/(4*kf))+(u_2/(2*kf*l))  +(u_4/(4*b)); */
     w12=(pid_in.u_1/(4*kf))-(u_pitch/(2*kf*l))-(u_yaw/(4*b));  
     w22=(pid_in.u_1/(4*kf))-(u_roll/(2*kf*l))  +(u_yaw/(4*b));
     w32=(pid_in.u_1/(4*kf))+(u_pitch/(2*kf*l))-(u_yaw/(4*b));
     w42=(pid_in.u_1/(4*kf))+(u_roll/(2*kf*l))  +(u_yaw/(4*b));
-
+    // if(w12 > 80)
+    //     w12 = 80;
+    // if(w22 > 80)
+    //     w22 = 80;
+    // if(w32 > 80)
+    //     w32 = 80;
+    // if(w42 > 80)
+    //     w42 = 80;
 
     if(w12 < 0)
         w12 = 0;
@@ -652,11 +673,46 @@ void control_drone(const gazebo_msgs::ModelStates::ConstPtr& msg, ros::Publisher
     double tolerans=0.25;
     
 
+    // clock_t currTime = clock();
+
+    /* if (drone_pose.position.x < (tra[sinir][0] + tolerans))
+        {
+             //cout<< sinir << "a" << "\n";
+            if (drone_pose.position.x > (tra[sinir][0] - tolerans))
+            {
+                // cout<< sinir << "b"  << "\n";
+                if (drone_pose.position.y < (tra[sinir][1] + tolerans))
+                {
+                     //cout<< sinir << "c"  << "\n";
+                    if (drone_pose.position.y > (tra[sinir][1] - tolerans))
+                    {
+                         //cout<< sinir << "d"  << "\n";
+                        if (drone_pose.position.z < (tra[sinir][2] + tolerans + 1))
+                        {
+                             //cout<< sinir << "f"  << "\n";
+                            if (drone_pose.position.z > (tra[sinir][2] - tolerans - 1))
+                            {
+                                
+                                sinir=sinir+1;
+                                cout<< sinir << "e"  << "\n";
+                                if (sinir>4)
+                                {
+                                    sinir=0;
+
+                                }}}}}}} */
+
+    // cout<< sinir << "\n";
+    // pid_position_in.ref_x=tra[sinir][0];
+    // pid_position_in.ref_y=tra[sinir][1];
+    // pid_position_in.ref_z=tra[sinir][2];
 
     pid_position_in.ref_x=iha_pose.position.x;
     pid_position_in.ref_y=iha_pose.position.y;
     pid_position_in.ref_z=iha_pose.position.z;
     
+    // pid_position_in.ref_x=-2;
+    // pid_position_in.ref_y=-1;
+    // pid_position_in.ref_z=2;
 
 
     pid_position_back = PID_position(pid_position_in);
@@ -676,7 +732,34 @@ void control_drone(const gazebo_msgs::ModelStates::ConstPtr& msg, ros::Publisher
     mk.data=k.yaw;
     a4.publish(mk);
 
+    // control_dt = currTime - pre_dt;
+    // pre_dt=currTime;
+    // cout<< currTime << " current time ";
+    // cout<<control_dt << "\n";
+    /* } */
 
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    // cout<< k.roll << " ; " << k.pitch << " ; " << k.yaw << " ; \n" ;
+
+    ////////////////////////////////////////rotation_control////////////////////////////////
+
+    /* pid_rotation_in.ref_roll = 0;
+    pid_rotation_in.ref_pitch = 0;
+    pid_rotation_in.ref_yaw = 0;
+    pid_rotation_back = PID_control(pid_rotation_in);
+    //cout<<"rotation_err " <<pid_rotation_back.preverr_roll <<" ; "<< pid_rotation_back.preverr_pitch <<" ; "<<pid_rotation_back.preverr_yaw <<"\n";
+    a1.publish(pid_rotation_back.f);
+    mk.data=k.roll;
+    a2.publish(mk);
+    mk.data=k.pitch;
+    a3.publish(mk);
+    mk.data=k.yaw;
+    a4.publish(mk); */
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////
 }
 
 int main(int argc, char **argv)
